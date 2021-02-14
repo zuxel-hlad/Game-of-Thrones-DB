@@ -57,7 +57,6 @@ export default class GotService {
       name: book.name,
       numberOfPages: book.numberOfPages,
       publisher: book.publisher,
-      country: book.publisher,
       released: book.released,
     };
   }

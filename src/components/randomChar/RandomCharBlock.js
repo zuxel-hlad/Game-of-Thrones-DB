@@ -13,6 +13,8 @@ export const RandomCharBlock = styled.div`
       justify-content: space-between;
   }
   .term {
+    display: block;
     font-weight: bold;
+    margin:  0 10px 0 0 ;
   }
 `;

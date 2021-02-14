@@ -30,8 +30,8 @@ export default class RandomChar extends Component {
   };
 
   updateChar() {
-    // const id = Math.floor(Math.random() * 140 + 25); /* since 25 from 140 */
-    const id = 33333; /* error testing */
+    const id = Math.floor(Math.random() * 140 + 25); /* since 25 from 140 */
+    // const id = 33333; /* error testing */
     this.gotService
       .getCharacter(id)
       .then(this.onCharLoaded)
@@ -66,15 +66,15 @@ const View = ({ char }) => {
       </ListGroupItem>
       <ListGroupItem>
         <span className="term">Born </span>
-        <span>{born}</span>
+        <span>{born ? born : "Unknown :("}</span>
       </ListGroupItem>
       <ListGroupItem>
         <span className="term">Died </span>
-        <span>{died}</span>
+        <span>{died ? died : "Unknown :("}</span>
       </ListGroupItem>
       <ListGroupItem>
         <span className="term">Culture</span>
-        <span>{culture}</span>
+        <span>{culture ? culture : "Unknown :("}</span>
       </ListGroupItem>
     </ListGroup>
   );

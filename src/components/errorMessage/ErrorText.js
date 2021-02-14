@@ -4,6 +4,7 @@ export const ErrorText = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  background-color: #fff;
   .error__img {
     margin: 0 20px 0 0;
     width: 40px;
