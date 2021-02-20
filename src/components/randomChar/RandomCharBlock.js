@@ -7,6 +7,7 @@ export const RandomCharBlock = styled.div`
   h4 {
     margin-bottom: 20px;
     text-align: center;
+    font-size: 20px;
   }
   ul li {
       display: flex;

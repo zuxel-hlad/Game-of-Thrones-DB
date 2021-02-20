@@ -6,16 +6,21 @@ import Spinner from "../spinner/spinner";
 import ErrorMessage from "../errorMessage/errorMessage";
 
 export default class RandomChar extends Component {
-  constructor() {
-    super();
-    this.updateChar();
-  }
   gotService = new gotService();
   state = {
     char: {},
     loading: true /* on load */,
     error: false,
   };
+
+  componentDidMount() {
+    this.updateChar();
+    this.timerId = setInterval(this.updateChar, 2000);
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.timerId);
+  }
 
   /* when page load */
   onCharLoaded = (char) => {
@@ -29,14 +34,14 @@ export default class RandomChar extends Component {
     });
   };
 
-  updateChar() {
+  updateChar = () => {
     const id = Math.floor(Math.random() * 140 + 25); /* since 25 from 140 */
     // const id = 33333; /* error testing */
     this.gotService
       .getCharacter(id)
       .then(this.onCharLoaded)
       .catch(this.onError);
-  }
+  };
 
   render() {
     const { char, loading, error } = this.state;
