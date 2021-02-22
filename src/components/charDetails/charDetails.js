@@ -5,6 +5,17 @@ import Spinner from "../spinner/spinner";
 import gotService from "../../services/gotService";
 import ErrorMessage from "../errorMessage";
 
+const Field = ({ char, field, label }) => {
+  return (
+    <ListGroupItem>
+      <span className="term">{label}</span>
+      <span>{char[field]}</span>
+    </ListGroupItem>
+  );
+};
+
+export { Field };
+
 export default class CharDetails extends Component {
   gotService = new gotService();
 
@@ -52,44 +63,36 @@ export default class CharDetails extends Component {
 
   render() {
     const { char, error, loading } = this.state;
-
     if (!char && error) {
       return <ErrorMessage />;
     } else if (!char) {
       return <SelectError>Please, select a character</SelectError>;
     }
-
     return (
       <CharDetailsBlock className="char-details rounded">
-        {loading ? <Spinner /> : <ViewContent char={char} />}
+        {loading ? (
+          <Spinner />
+        ) : (
+          <ViewContent
+            char={char}
+            children={React.Children.map(this.props.children, (child) => {
+              return React.cloneElement(child, { char });
+            })}
+          />
+        )}
       </CharDetailsBlock>
     );
   }
 }
 
-const ViewContent = ({ char }) => {
-  const { name, gender, born, died, culture } = char;
+const ViewContent = (props) => {
+  const { name } = props.char;
+  const { children } = props;
+
   return (
     <>
-      <h4>{name ? name : "Unknown :("}</h4>
-      <ListGroup flush>
-        <ListGroupItem>
-          <span className="term">Gender</span>
-          <span>{gender ? gender : "Unknown"}</span>
-        </ListGroupItem>
-        <ListGroupItem>
-          <span className="term">Born</span>
-          <span>{born ? born : "Unknown :("}</span>
-        </ListGroupItem>
-        <ListGroupItem>
-          <span className="term">Died</span>
-          <span>{died ? died : "Unknown :("}</span>
-        </ListGroupItem>
-        <ListGroupItem>
-          <span className="term">Culture</span>
-          <span>{culture ? culture : "Unknown :("}</span>
-        </ListGroupItem>
-      </ListGroup>
+      <h4>{name}</h4>
+      <ListGroup flush>{children}</ListGroup>
     </>
   );
 };

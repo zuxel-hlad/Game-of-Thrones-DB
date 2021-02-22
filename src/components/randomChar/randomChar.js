@@ -71,15 +71,15 @@ const View = ({ char }) => {
       </ListGroupItem>
       <ListGroupItem>
         <span className="term">Born </span>
-        <span>{born ? born : "Unknown :("}</span>
+        <span>{born}</span>
       </ListGroupItem>
       <ListGroupItem>
         <span className="term">Died </span>
-        <span>{died ? died : "Unknown :("}</span>
+        <span>{died}</span>
       </ListGroupItem>
       <ListGroupItem>
         <span className="term">Culture</span>
-        <span>{culture ? culture : "Unknown :("}</span>
+        <span>{culture}</span>
       </ListGroupItem>
     </ListGroup>
   );

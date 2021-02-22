@@ -1,30 +1,28 @@
 import React, { Component } from "react";
 import { ListGroup, ListGroupItem } from "reactstrap";
 import { ListGroupBlock } from "./ListGroupBlock";
-import gotService from "../../services/gotService";
 import Spinner from "../spinner/spinner";
 import ErrorMessage from "../errorMessage";
 
 export default class ItemList extends Component {
-  gotService = new gotService();
-
   state = {
-    charList: null,
+    itemList: null,
     error: false,
   };
-
   componentDidMount() {
-    this.gotService
-      .getAllCharacters()
-      .then((charlist) => {
-        this.setState({ charlist, error: false });
+    /* function from props from character page */
+
+    const { getData } = this.props;
+    getData()
+      .then((itemList) => {
+        this.setState({ itemList, error: false });
       })
       .catch(() => this.onError);
   }
 
   componentDidCatch() {
     this.setState({
-      charList: null,
+      itemList: null,
       error: true,
     });
   }
@@ -37,25 +35,25 @@ export default class ItemList extends Component {
   };
 
   renderItems(arr) {
-    return arr.map((item, i) => {
-      const uniqueKey = `sha${(~~(Math.random() * 1e8)).toString(16)}`;
+    return arr.map((item) => {
+      const { id } = item;
+      const label = this.props.renderItem(item);
       return (
         <ListGroupItem
-          key={uniqueKey}
+          key={id}
           className="item-list"
-          onClick={() => this.props.onCharSelected(41 + i)}
+          onClick={() => this.props.onItemSelected(id)}
         >
-          {item.name}
+          {label}
         </ListGroupItem>
       );
     });
   }
 
   render() {
-    const { charlist, error } = this.state;
+    const { itemList, error } = this.state;
     const errorMessage = error ? <ErrorMessage /> : null;
-
-    const content = charlist ? this.renderItems(charlist) : <Spinner />;
+    const content = itemList ? this.renderItems(itemList) : <Spinner />;
 
     return (
       <ListGroupBlock>
