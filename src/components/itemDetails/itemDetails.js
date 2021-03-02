@@ -1,92 +1,85 @@
 import React, { Component } from "react";
-import { CharDetailsBlock, SelectError } from "./CharDetailsBlock";
+import { ItemDetailsBlock, SelectError } from "./itemDetailsBlock";
 import { ListGroup, ListGroupItem } from "reactstrap";
 import Spinner from "../spinner/spinner";
-import gotService from "../../services/gotService";
 import ErrorMessage from "../errorMessage";
 
-const Field = ({ char, field, label }) => {
+const Field = ({ item, field, label }) => {
   return (
     <ListGroupItem>
       <span className="term">{label}</span>
-      <span>{char[field]}</span>
+      <span>{item[field]}</span>
     </ListGroupItem>
   );
 };
 
 export { Field };
 
-export default class CharDetails extends Component {
-  gotService = new gotService();
-
+export default class ItemDetails extends Component {
   state = {
-    char: null,
+    item: null,
     loading: true,
     error: false,
   };
 
   componentDidMount() {
-    this.createChar();
+    this.updateItem();
   }
 
   componentDidUpdate(prevProps) {
-    if (this.props.charId !== prevProps.charId) {
-      this.createChar();
+    if (this.props.itemId !== prevProps.itemId) {
+      this.updateItem();
     }
   }
 
-  onCharSelectedLoading = (char) => {
-    this.setState({ char, loading: false });
+  onItemSelectedLoading = (item) => {
+    this.setState({ item, loading: false });
   };
 
-  createChar() {
-    const { charId } = this.props;
-    if (!charId) {
+  updateItem() {
+    const { itemId, getData } = this.props;
+    if (!itemId) {
       return;
     }
-
     this.setState({ loading: true });
-
-    this.gotService
-      .getCharacter(charId)
-      .then(this.onCharSelectedLoading)
+    getData(itemId)
+      .then(this.onItemSelectedLoading)
       .catch(() => this.onError);
     // this.foo.bar = 4;
   }
-
   onError = () => {
     this.setState({
-      char: null,
+      item: null,
       error: true,
     });
   };
 
   render() {
-    const { char, error, loading } = this.state;
-    if (!char && error) {
+    const { item, error, loading } = this.state;
+    if (!item && error) {
       return <ErrorMessage />;
-    } else if (!char) {
-      return <SelectError>Please, select a character</SelectError>;
+    } else if (!item) {
+      return <SelectError>Please, select a {this.props.itemType}</SelectError>;
     }
     return (
-      <CharDetailsBlock className="char-details rounded">
+      <ItemDetailsBlock className="item-details rounded">
         {loading ? (
           <Spinner />
         ) : (
           <ViewContent
-            char={char}
+            item={item}
             children={React.Children.map(this.props.children, (child) => {
-              return React.cloneElement(child, { char });
+              return React.cloneElement(child, { item });
             })}
           />
         )}
-      </CharDetailsBlock>
+      </ItemDetailsBlock>
     );
   }
 }
 
 const ViewContent = (props) => {
-  const { name } = props.char;
+  const { name } = props.item;
   const { children } = props;
 
   return (

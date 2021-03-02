@@ -1,10 +1,10 @@
 import React, { Component } from "react";
-import RowBlock from "../rowBlock";
-import ItemList from "../itemList";
-import CharDetails, { Field } from "../charDetails";
+import RowBlock from "../../rowBlock";
+import ItemList from "../../itemList";
+import ItemDetails, { Field } from "../../itemDetails";
 import { CharacterPageBlock } from "./characterPageBlock";
-import ErrorMessage from "../errorMessage";
-import gotService from "../../services/gotService";
+import ErrorMessage from "../../errorMessage";
+import gotService from "../../../services/gotService";
 
 export default class CharacterPage extends Component {
   gotService = new gotService();
@@ -14,7 +14,7 @@ export default class CharacterPage extends Component {
     error: false,
   };
 
-  onItemSelected = (id) => {
+  onCharacterSelected = (id) => {
     this.setState({
       selectedChar: id,
     });
@@ -34,23 +34,23 @@ export default class CharacterPage extends Component {
 
     const itemList = (
       <ItemList
-        onItemSelected={this.onItemSelected}
+        onItemSelected={this.onCharacterSelected}
         getData={this.gotService.getAllCharacters}
-        renderItem={({ name, gender }) => `${name} (${gender})`}
+        renderItem={({ name }) => name}
       />
     );
 
-    const charDetails = (
-      <CharDetails charId={selectedChar}>
+    const characterDetails = (
+      <ItemDetails getData={this.gotService.getCharacter} itemId={selectedChar} itemType={'character.'}>
         <Field field="gender" label="Gender" />
         <Field field="born" label="Born" />
         <Field field="died" label="Died" />
         <Field field="culture" label="Culture" />
-      </CharDetails>
+      </ItemDetails>
     );
     return (
       <CharacterPageBlock>
-        <RowBlock leftCol={itemList} rightCol={charDetails} />
+        <RowBlock leftCol={itemList} rightCol={characterDetails} />
       </CharacterPageBlock>
     );
   }

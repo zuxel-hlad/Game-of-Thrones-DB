@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-export const CharDetailsBlock = styled.div`
+export const ItemDetailsBlock = styled.div`
     background-color: #fff;
     padding: 25px 25px 15px 25px;
     margin-bottom: 40px;

@@ -42,7 +42,7 @@ export default class GotService {
     return this._transformHouse(house);
   };
 
-  isSet(data) {
+  isSet = (data) => {
     if (data) {
       return data;
     } else {
@@ -73,7 +73,8 @@ export default class GotService {
       region: this.isSet(house.region),
       words: this.isSet(house.words),
       titles: this.isSet(house.titles),
-      ancestralWeapons: this.isSet(house.ancestralWeapons),
+      coatOfArms: this.isSet(house.coatOfArms),
+      
     };
   };
 

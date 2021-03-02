@@ -4,14 +4,12 @@ import { AppBlock } from "./AppBlock";
 import Header from "../header";
 import RandomChar from "../randomChar";
 import { Button } from "reactstrap";
-import ItemList from "../itemList";
-import CharDetails from "../charDetails";
-import CharacterPage from "../characterPage/characterPage";
+import CharacterPage from "../pages/characterPage/characterPage";
 import ErrorMessage from "../errorMessage/errorMessage";
-import gotService from "../../services/gotService";
+import BooksPage from "../pages/booksPage";
+import HousesPage from "../pages/housesPage";
 
 export default class extends Component {
-  gotService = new gotService();
 
   state = {
     showRandomChar: true,
@@ -56,30 +54,8 @@ export default class extends Component {
             </Col>
           </Row>
           <CharacterPage />
-          <Row>
-            <Col md="6">
-              <ItemList
-                onItemSelected={this.onItemSelected}
-                getData={this.gotService.getAllBooks}
-                renderItem={(item) => <span>{item.name}</span>}
-              />
-            </Col>
-            <Col md="6">
-              <CharDetails charId={this.state.selectedChar} />
-            </Col>
-          </Row>
-          <Row>
-            <Col md="6">
-              <ItemList
-                onItemSelected={this.onItemSelected}
-                getData={this.gotService.getAllHouses}
-                renderItem={(item) => item.name}
-              />
-            </Col>
-            <Col md="6">
-              <CharDetails charId={this.state.selectedChar} />
-            </Col>
-          </Row>
+          <BooksPage/>
+          <HousesPage/>
         </Container>
       </AppBlock>
     );
