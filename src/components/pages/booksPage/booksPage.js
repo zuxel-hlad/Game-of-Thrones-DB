@@ -27,19 +27,15 @@ class BooksPage extends Component {
     const itemList = (
       <ItemList
         onItemSelected={(itemId) => {
-this.props.history.push(itemId)
+          this.props.history.push(itemId);
         }}
         getData={this.gotService.getAllBooks}
         renderItem={({ name }) => name}
       />
     );
 
-    return (
-      <BooksPageBlock>
-        {itemList}
-      </BooksPageBlock>
-    );
+    return <BooksPageBlock>{itemList}</BooksPageBlock>;
   }
 }
 
-export default withRouter(BooksPage)
+export default withRouter(BooksPage);

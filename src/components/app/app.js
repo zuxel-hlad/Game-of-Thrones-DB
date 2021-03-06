@@ -66,10 +66,6 @@ export default class extends Component {
                 return <BooksItem bookId={id} />;
               }}
             />
-
-            {/* <CharacterPage />
-            <BooksPage />
-            <HousesPage /> */}
           </Container>
         </AppBlock>
       </Router>
