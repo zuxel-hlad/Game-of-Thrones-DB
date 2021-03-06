@@ -1,23 +1,15 @@
 import React, { Component } from "react";
-import RowBlock from "../../rowBlock";
 import ItemList from "../../itemList";
-import ItemDetails, { Field } from "../../itemDetails";
 import { BooksPageBlock } from "./booksPageBlock";
 import ErrorMessage from "../../errorMessage";
 import gotService from "../../../services/gotService";
+import { withRouter } from "react-router-dom";
 
-export default class BooksPage extends Component {
+class BooksPage extends Component {
   gotService = new gotService();
 
   state = {
-    selectedBook: null,
     error: false,
-  };
-
-  onBookSelected = (id) => {
-    this.setState({
-      selectedBook: id,
-    });
   };
 
   componentDidCatch() {
@@ -27,34 +19,27 @@ export default class BooksPage extends Component {
   }
 
   render() {
-    const { selectedBook, error } = this.state;
+    const { error } = this.state;
     if (error) {
       return <ErrorMessage />;
     }
 
     const itemList = (
       <ItemList
-        onItemSelected={this.onBookSelected}
+        onItemSelected={(itemId) => {
+this.props.history.push(itemId)
+        }}
         getData={this.gotService.getAllBooks}
         renderItem={({ name }) => name}
       />
     );
 
-    const bookDetails = (
-      <ItemDetails
-        getData={this.gotService.getBook}
-        itemId={selectedBook}
-        itemType={"book."}
-      >
-        <Field field="numberOfPages" label="Number Of Pages" />
-        <Field field="publisher" label="Publisher" />
-        <Field field="released" label="Released" />
-      </ItemDetails>
-    );
     return (
       <BooksPageBlock>
-        <RowBlock leftCol={itemList} rightCol={bookDetails} />
+        {itemList}
       </BooksPageBlock>
     );
   }
 }
+
+export default withRouter(BooksPage)
