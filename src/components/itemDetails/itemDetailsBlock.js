@@ -1,6 +1,7 @@
 import styled from "styled-components";
 
 export const ItemDetailsBlock = styled.div`
+    position: relative;
     width: 540px;
     background-color: #fff;
     padding: 25px 25px 15px 25px;
@@ -16,6 +17,11 @@ export const ItemDetailsBlock = styled.div`
     }
     .term {
       font-weight: 700;
+    }
+    a {
+      position: absolute;
+      top: 5px;
+      right: 10px;
     }
   `,
   SelectError = styled.span`

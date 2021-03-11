@@ -3,12 +3,22 @@ import { ListGroup, ListGroupItem } from "reactstrap";
 import { ListGroupBlock } from "./ListGroupBlock";
 import Spinner from "../spinner/spinner";
 import ErrorMessage from "../errorMessage";
+import PropTypes from "prop-types";
 
 export default class ItemList extends Component {
   state = {
     itemList: null,
     error: false,
   };
+
+  static defaultProps = {
+    onItemSelected: () => {},
+  };
+
+  static propTypes = {
+    onItemSelected: PropTypes.func,
+  };
+
   componentDidMount() {
     /* function from props from character page */
 

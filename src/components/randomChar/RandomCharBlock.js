@@ -10,12 +10,12 @@ export const RandomCharBlock = styled.div`
     font-size: 20px;
   }
   ul li {
-      display: flex;
-      justify-content: space-between;
+    display: flex;
+    justify-content: space-between;
   }
   .term {
     display: block;
     font-weight: bold;
-    margin:  0 10px 0 0 ;
+    margin: 0 10px 0 0;
   }
 `;

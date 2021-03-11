@@ -41,7 +41,11 @@ export default class HousesPage extends Component {
     );
 
     const houseDetails = (
-      <ItemDetails getData={this.gotService.getHouse} itemId={selectedHouse} itemType={'house.'}>
+      <ItemDetails
+        getData={this.gotService.getHouse}
+        itemId={selectedHouse}
+        itemType={"house."}
+      >
         <Field field="region" label="Region" />
         <Field field="words" label="Words" />
         <Field field="coatOfArms" label="Coat Of Arms" />

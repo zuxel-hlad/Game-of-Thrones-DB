@@ -48,7 +48,7 @@ export default class GotService {
     } else {
       return "no data :(";
     }
-  }
+  };
 
   _extractId = (item) => {
     const idRegExp = /\/([0-9]*)$/;
@@ -74,7 +74,6 @@ export default class GotService {
       words: this.isSet(house.words),
       titles: this.isSet(house.titles),
       coatOfArms: this.isSet(house.coatOfArms),
-      
     };
   };
 

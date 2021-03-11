@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { ItemDetailsBlock, SelectError } from "./itemDetailsBlock";
 import { ListGroup, ListGroupItem } from "reactstrap";
+import { Link } from "react-router-dom";
 import Spinner from "../spinner/spinner";
 import ErrorMessage from "../errorMessage";
 
@@ -63,6 +64,9 @@ export default class ItemDetails extends Component {
     }
     return (
       <ItemDetailsBlock className="item-details rounded">
+        <Link to="/">
+          <i className="far fa-times-circle" />
+        </Link>
         {loading ? (
           <Spinner />
         ) : (

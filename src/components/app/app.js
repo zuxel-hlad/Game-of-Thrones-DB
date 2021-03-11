@@ -11,6 +11,7 @@ import HousesPage from "../pages/housesPage";
 import BooksItem from "../pages/booksItem";
 import PageNofFound from "../pages/pageNotFound/pageNotFound";
 import { BrowserRouter as Router, Route } from "react-router-dom";
+import StartPage from "../pages/startPage";
 
 export default class App extends Component {
   state = {
@@ -40,13 +41,14 @@ export default class App extends Component {
     return (
       <Router>
         <AppBlock>
+          <Route exact path="/startpage" component={StartPage} />
           <Container>
             <Header />
           </Container>
           <Container>
             <Row>
               <Col lg={{ size: 5, offset: 0 }}>
-                {showRandomChar ? <RandomChar /> : null}
+                {showRandomChar ? <RandomChar interval={1500} /> : null}
                 <Button
                   color="primary"
                   className="toggle-btn"

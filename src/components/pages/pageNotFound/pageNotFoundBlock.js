@@ -15,7 +15,7 @@ export const PageNofFoundBlock = styled.div`
     outline: none;
     border: none;
     position: absolute;
-    top: 10px;
-    right: 20px;
+    top: 5px;
+    right: 10px;
   }
 `;

@@ -4,6 +4,7 @@ import { ListGroup, ListGroupItem } from "reactstrap";
 import gotService from "../../services/gotService";
 import Spinner from "../spinner/spinner";
 import ErrorMessage from "../errorMessage/errorMessage";
+import PropTypes from "prop-types";
 
 export default class RandomChar extends Component {
   gotService = new gotService();
@@ -15,9 +16,9 @@ export default class RandomChar extends Component {
 
   componentDidMount() {
     this.updateChar();
-    this.timerId = setInterval(this.updateChar, 2000);
+    this.timerId = setInterval(this.updateChar, this.props.interval);
   }
-
+  /* this.props.interval */
   componentWillUnmount() {
     clearInterval(this.timerId);
   }
@@ -83,4 +84,12 @@ const View = ({ char }) => {
       </ListGroupItem>
     </ListGroup>
   );
+};
+
+RandomChar.defaultProps = {
+  interval: 1500,
+};
+
+RandomChar.propTypes = {
+  interval: PropTypes.number,
 };
