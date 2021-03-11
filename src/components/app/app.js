@@ -9,10 +9,10 @@ import ErrorMessage from "../errorMessage/errorMessage";
 import BooksPage from "../pages/booksPage";
 import HousesPage from "../pages/housesPage";
 import BooksItem from "../pages/booksItem";
-import StartPage from "../pages/startPage";
+import PageNofFound from "../pages/pageNotFound/pageNotFound";
 import { BrowserRouter as Router, Route } from "react-router-dom";
 
-export default class extends Component {
+export default class App extends Component {
   state = {
     showRandomChar: true,
     error: false,
@@ -40,7 +40,6 @@ export default class extends Component {
     return (
       <Router>
         <AppBlock>
-          <StartPage />
           <Container>
             <Header />
           </Container>
@@ -57,14 +56,14 @@ export default class extends Component {
                 </Button>
               </Col>
             </Row>
-            <Route path="/characters" component={CharacterPage} />
-            <Route path="/houses" component={HousesPage} />
-            <Route path="/books" exact component={BooksPage} />
+            <Route exact path="/characters" component={CharacterPage} />
+            <Route exact path="/houses" component={HousesPage} />
+            <Route exact path="/books" component={BooksPage} />
             <Route
               path="/books/:id"
               render={({ match }) => {
                 const { id } = match.params;
-                return <BooksItem bookId={id} />;
+                return id <= 10 ? <BooksItem bookId={id} /> : <PageNofFound />;
               }}
             />
           </Container>
