@@ -12,6 +12,7 @@ export default class StartPage extends Component {
       modal: !true,
     });
   };
+  
   render() {
     const { modal } = this.state;
     const content = (
