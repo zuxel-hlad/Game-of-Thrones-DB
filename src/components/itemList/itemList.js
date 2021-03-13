@@ -2,15 +2,10 @@ import React, { Component } from "react";
 import { ListGroup, ListGroupItem } from "reactstrap";
 import { ListGroupBlock } from "./ListGroupBlock";
 import Spinner from "../spinner/spinner";
-import ErrorMessage from "../errorMessage";
+import gotService from "../../services/gotService";
 import PropTypes from "prop-types";
 
-export default class ItemList extends Component {
-  state = {
-    itemList: null,
-    error: false,
-  };
-
+class ItemList extends Component {
   static defaultProps = {
     onItemSelected: () => {},
   };
@@ -19,30 +14,11 @@ export default class ItemList extends Component {
     onItemSelected: PropTypes.func,
   };
 
-  componentDidMount() {
-    /* function from props from character page */
-
-    const { getData } = this.props;
-    getData()
-      .then((itemList) => {
-        this.setState({ itemList, error: false });
-      })
-      .catch(() => this.onError);
-  }
-
   componentDidCatch() {
     this.setState({
       itemList: null,
-      error: true,
     });
   }
-
-  onError = (status) => {
-    this.setState({
-      char: null,
-      error: true,
-    });
-  };
 
   renderItems(arr) {
     return arr.map((item) => {
@@ -61,17 +37,34 @@ export default class ItemList extends Component {
   }
 
   render() {
-    const { itemList, error } = this.state;
-    const errorMessage = error ? <ErrorMessage /> : null;
-    const content = itemList ? this.renderItems(itemList) : <Spinner />;
-
+    const { data } = this.props;
+    const items = data ? this.renderItems(data) : <Spinner />;
     return (
       <ListGroupBlock>
-        <ListGroup>
-          {errorMessage}
-          {content}
-        </ListGroup>
+        <ListGroup>{items}</ListGroup>
       </ListGroupBlock>
     );
   }
 }
+
+const withData = (View, getData) => {
+  return class extends Component {
+    state = {
+      data: null,
+    };
+    componentDidMount() {
+      /* function from props from character page */
+      getData()
+        .then((data) => {
+          this.setState({ data, error: false });
+        })
+        .catch(() => this.onError);
+    }
+    render() {
+      const { data } = this.state;
+      return <View {...this.props} data={data} />;
+    }
+  };
+};
+const{getAllCharacters} = new gotService()
+export default withData(ItemList, getAllCharacters);

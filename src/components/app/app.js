@@ -3,7 +3,6 @@ import { Col, Row, Container } from "reactstrap";
 import { AppBlock } from "./AppBlock";
 import Header from "../header";
 import RandomChar from "../randomChar";
-import { Button } from "reactstrap";
 import CharacterPage from "../pages/characterPage/characterPage";
 import ErrorMessage from "../errorMessage/errorMessage";
 import BooksPage from "../pages/booksPage";
@@ -49,7 +48,7 @@ export default class App extends Component {
             <Row>
               <Col lg={{ size: 5, offset: 0 }}>
                 {showRandomChar ? (
-                  <RandomChar close={this.toggleRandomChar} interval={1500} />
+                  <RandomChar toggleRandomChar={this.toggleRandomChar} interval={1500} />
                 ) : null}
               </Col>
             </Row>
