@@ -1,9 +1,19 @@
 import styled from "styled-components";
 
 export const RandomCharBlock = styled.div`
+position: relative;
   background-color: #fff;
   padding: 25px 25px 15px 25px;
   margin-bottom: 40px;
+  .close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    display: block;
+    i{
+      display: block;
+    }
+  }
   h4 {
     margin-bottom: 20px;
     text-align: center;

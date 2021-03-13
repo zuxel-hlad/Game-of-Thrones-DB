@@ -48,14 +48,9 @@ export default class App extends Component {
           <Container>
             <Row>
               <Col lg={{ size: 5, offset: 0 }}>
-                {showRandomChar ? <RandomChar interval={1500} /> : null}
-                <Button
-                  color="primary"
-                  className="toggle-btn"
-                  onClick={this.toggleRandomChar}
-                >
-                  Toggle random character
-                </Button>
+                {showRandomChar ? (
+                  <RandomChar close={this.toggleRandomChar} interval={1500} />
+                ) : null}
               </Col>
             </Row>
             <Route exact path="/characters" component={CharacterPage} />

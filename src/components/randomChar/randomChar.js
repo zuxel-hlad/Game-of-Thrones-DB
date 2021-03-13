@@ -46,6 +46,7 @@ export default class RandomChar extends Component {
 
   render() {
     const { char, loading, error } = this.state;
+    const {close} = this.props;
 
     const errorMessage = error ? <ErrorMessage /> : null;
     const spinner = loading ? <Spinner /> : null;
@@ -53,6 +54,7 @@ export default class RandomChar extends Component {
 
     return (
       <RandomCharBlock className="rounded">
+        <span className="close" onClick={close}><i className="far fa-times-circle"></i></span>
         {errorMessage}
         {spinner}
         {content}
