@@ -3,19 +3,13 @@ import { ListGroup, ListGroupItem } from "reactstrap";
 import { ListGroupBlock } from "./ListGroupBlock";
 import Spinner from "../spinner/spinner";
 import PropTypes from "prop-types";
+import ErrorMessage from "../errorMessage";
 
 export default class ItemList extends Component {
   state = {
     itemList: null,
+    error: false,
   };
-  componentDidMount() {
-    /* function from props from character page */
-    const { getData } = this.props;
-
-    getData().then((itemList) => {
-      this.setState({ itemList });
-    });
-  }
 
   static defaultProps = {
     onItemSelected: () => {},
@@ -25,11 +19,30 @@ export default class ItemList extends Component {
     onItemSelected: PropTypes.func,
   };
 
+  componentDidMount() {
+    /* function from props from character page */
+    const { getData } = this.props;
+
+    getData()
+      .then((itemList) => {
+        this.setState({ itemList, error: false });
+      })
+      .catch(() => this.onError);
+  }
+
   componentDidCatch() {
     this.setState({
       itemList: null,
+      error: true,
     });
   }
+
+  onError = (error) => {
+    this.setState({
+      itemList: null,
+      error: true,
+    });
+  };
 
   renderItems(arr) {
     return arr.map((item) => {
@@ -48,11 +61,15 @@ export default class ItemList extends Component {
   }
 
   render() {
-    const { itemList } = this.state;
+    const { itemList, error } = this.state;
+    const errorMessage = error ? <ErrorMessage /> : null;
     const items = itemList ? this.renderItems(itemList) : <Spinner />;
     return (
       <ListGroupBlock>
-        <ListGroup>{items}</ListGroup>
+        <ListGroup>
+          {errorMessage}
+          {items}
+        </ListGroup>
       </ListGroupBlock>
     );
   }
