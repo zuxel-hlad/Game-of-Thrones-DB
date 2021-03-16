@@ -2,10 +2,21 @@ import React, { Component } from "react";
 import { ListGroup, ListGroupItem } from "reactstrap";
 import { ListGroupBlock } from "./ListGroupBlock";
 import Spinner from "../spinner/spinner";
-import gotService from "../../services/gotService";
 import PropTypes from "prop-types";
 
-class ItemList extends Component {
+export default class ItemList extends Component {
+  state = {
+    itemList: null,
+  };
+  componentDidMount() {
+    /* function from props from character page */
+    const { getData } = this.props;
+
+    getData().then((itemList) => {
+      this.setState({ itemList });
+    });
+  }
+
   static defaultProps = {
     onItemSelected: () => {},
   };
@@ -37,8 +48,8 @@ class ItemList extends Component {
   }
 
   render() {
-    const { data } = this.props;
-    const items = data ? this.renderItems(data) : <Spinner />;
+    const { itemList } = this.state;
+    const items = itemList ? this.renderItems(itemList) : <Spinner />;
     return (
       <ListGroupBlock>
         <ListGroup>{items}</ListGroup>
@@ -46,25 +57,3 @@ class ItemList extends Component {
     );
   }
 }
-
-const withData = (View, getData) => {
-  return class extends Component {
-    state = {
-      data: null,
-    };
-    componentDidMount() {
-      /* function from props from character page */
-      getData()
-        .then((data) => {
-          this.setState({ data, error: false });
-        })
-        .catch(() => this.onError);
-    }
-    render() {
-      const { data } = this.state;
-      return <View {...this.props} data={data} />;
-    }
-  };
-};
-const{getAllCharacters} = new gotService()
-export default withData(ItemList, getAllCharacters);
