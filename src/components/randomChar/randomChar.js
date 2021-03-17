@@ -14,6 +14,8 @@ export default class RandomChar extends Component {
     error: false,
   };
 
+
+
   componentDidMount() {
     this.updateChar();
     this.timerId = setInterval(this.updateChar, this.props.interval);
