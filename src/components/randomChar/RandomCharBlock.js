@@ -6,6 +6,7 @@ position: relative;
   padding: 25px 25px 15px 25px;
   margin-bottom: 40px;
   .close {
+    cursor: pointer;
     position: absolute;
     top: 10px;
     right: 10px;

@@ -1,71 +1,54 @@
-import React, { Component } from "react";
+import React, { useState, useEffect } from "react";
 import { RandomCharBlock } from "./RandomCharBlock";
 import { ListGroup, ListGroupItem } from "reactstrap";
 import gotService from "../../services/gotService";
 import Spinner from "../spinner/spinner";
 import ErrorMessage from "../errorMessage/errorMessage";
-import PropTypes from "prop-types";
 
-export default class RandomChar extends Component {
-  gotService = new gotService();
-  state = {
-    char: {},
-    loading: true /* on load */,
-    error: false,
+const RandomChar = ({ interval, toggleRandomChar }) => {
+  const [char, setChar] = useState({});
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
+
+  useEffect(() => {
+    updateChar();
+    let timerId = setInterval(updateChar, interval);
+    return () => clearInterval(timerId);
+  }, []);
+
+  const onCharLoaded = (char) => {
+    setChar(char);
+    setLoading(false);
   };
 
-
-
-  componentDidMount() {
-    this.updateChar();
-    this.timerId = setInterval(this.updateChar, this.props.interval);
-  }
-  /* this.props.interval */
-  componentWillUnmount() {
-    clearInterval(this.timerId);
-  }
-
-  /* when page load */
-  onCharLoaded = (char) => {
-    this.setState({ char, loading: false });
+  const onError = (err) => {
+    setError(true);
+    setLoading(false);
   };
 
-  onError = (err) => {
-    this.setState({
-      error: true,
-      loading: false,
-    });
-  };
-
-  updateChar = () => {
+  function updateChar() {
     const id = Math.floor(Math.random() * 140 + 25); /* since 25 from 140 */
     // const id = 33333; /* error testing */
-    this.gotService
+    new gotService()
       .getCharacter(id)
-      .then(this.onCharLoaded)
-      .catch(this.onError);
-  };
-
-  render() {
-    const { char, loading, error } = this.state;
-    const { toggleRandomChar } = this.props;
-
-    const errorMessage = error ? <ErrorMessage /> : null;
-    const spinner = loading ? <Spinner /> : null;
-    const content = !(loading || error) ? <View char={char} /> : null;
-
-    return (
-      <RandomCharBlock className="rounded">
-        <span className="close" onClick={toggleRandomChar}>
-          <i className="far fa-times-circle"></i>
-        </span>
-        {errorMessage}
-        {spinner}
-        {content}
-      </RandomCharBlock>
-    );
+      .then(onCharLoaded)
+      .catch(onError);
   }
-}
+  const errorMessage = error ? <ErrorMessage /> : null;
+  const spinner = loading ? <Spinner /> : null;
+  const content = !(loading || error) ? <View char={char} /> : null;
+
+  return (
+    <RandomCharBlock className="rounded">
+      <span className="close" onClick={toggleRandomChar}>
+        <i className="far fa-times-circle"></i>
+      </span>
+      {errorMessage}
+      {spinner}
+      {content}
+    </RandomCharBlock>
+  );
+};
 
 const View = ({ char }) => {
   const { name, gender, born, died, culture } = char;
@@ -92,10 +75,4 @@ const View = ({ char }) => {
   );
 };
 
-RandomChar.defaultProps = {
-  interval: 1500,
-};
-
-RandomChar.propTypes = {
-  interval: PropTypes.number,
-};
+export default RandomChar;

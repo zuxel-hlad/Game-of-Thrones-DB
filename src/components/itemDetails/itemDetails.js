@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { useState, useEffect } from "react";
 import { ItemDetailsBlock, SelectError } from "./itemDetailsBlock";
 import { ListGroup, ListGroupItem } from "reactstrap";
 import { Link } from "react-router-dom";
@@ -16,71 +16,60 @@ const Field = ({ item, field, label }) => {
 
 export { Field };
 
-export default class ItemDetails extends Component {
-  state = {
-    item: null,
-    loading: true,
-    error: false,
+const ItemDetails = ({ itemId, getData, itemType, children }) => {
+  const [item, setItem] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
+
+  useEffect(() => {
+    updateItem();
+  }, [itemId]);
+
+  const onItemSelectedLoading = (item) => {
+    setItem(item);
+    setLoading(false);
   };
 
-  componentDidMount() {
-    this.updateItem();
-  }
-
-  componentDidUpdate(prevProps) {
-    if (this.props.itemId !== prevProps.itemId) {
-      this.updateItem();
-    }
-  }
-
-  onItemSelectedLoading = (item) => {
-    this.setState({ item, loading: false });
-  };
-
-  updateItem() {
-    const { itemId, getData } = this.props;
+  function updateItem() {
     if (!itemId) {
       return;
     }
-    this.setState({ loading: true });
+    setLoading(true);
     getData(itemId)
-      .then(this.onItemSelectedLoading)
-      .catch(() => this.onError);
-    // this.foo.bar = 4;
+      .then(onItemSelectedLoading)
+      .catch(() => onError);
   }
-  onError = () => {
-    this.setState({
-      item: null,
-      error: true,
-    });
-  };
 
-  render() {
-    const { item, error, loading } = this.state;
-    if (!item && error) {
-      return <ErrorMessage />;
-    } else if (!item) {
-      return <SelectError>Please, select a {this.props.itemType}</SelectError>;
-    }
-    return (
-      <ItemDetailsBlock className="item-details rounded">
-        <Link to="/">
-          <i className="far fa-times-circle" />
-        </Link>
-        {loading ? (
-          <Spinner />
-        ) : (
-          <ViewContent
-            item={item}
-            children={React.Children.map(this.props.children, (child) => {
-              return React.cloneElement(child, { item });
-            })}
-          />
-        )}
-      </ItemDetailsBlock>
-    );
+  function onError() {
+    setItem(null);
+    setError(true);
   }
-}
+
+  if (!item && error) {
+    return <ErrorMessage />;
+  } else if (!item) {
+    return <SelectError>Please, select a {itemType}</SelectError>;
+  }
+  return (
+    <ItemDetailsBlock className="item-details rounded">
+      <Link to="/">
+        <i className="far fa-times-circle" />
+      </Link>
+      {loading ? (
+        <Spinner />
+      ) : (
+        <ViewContent
+          item={item}
+          children={React.Children.map(children, (child) => {
+            return React.cloneElement(child, { item });
+          })}
+        />
+      )}
+    </ItemDetailsBlock>
+  );
+};
+
+export default ItemDetails;
 
 const ViewContent = (props) => {
   const { name } = props.item;

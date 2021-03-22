@@ -48,7 +48,10 @@ export default class App extends Component {
             <Row>
               <Col lg={{ size: 5, offset: 0 }}>
                 {showRandomChar ? (
-                  <RandomChar toggleRandomChar={this.toggleRandomChar} interval={1500} />
+                  <RandomChar
+                    toggleRandomChar={this.toggleRandomChar}
+                    interval={1500}
+                  />
                 ) : null}
               </Col>
             </Row>
